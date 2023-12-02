@@ -15,14 +15,17 @@ import {
 import SupplementarySheetComponent from "../components/SupplementarySheetComponent";
 
 class FormContainer extends Component {
+  // @ts-ignore
   constructor(props) {
     super(props);
 
+    // @ts-ignore
     this.fileInput = createRef();
   }
 
-  onLoadFile = (evt) => {
+  onLoadFile = (evt: any) => {
     try {
+      // @ts-ignore
       this.props.onImport(evt.target.result);
     } catch (e) {
       alert("Ошибка!");
@@ -30,6 +33,7 @@ class FormContainer extends Component {
     }
   };
 
+  // @ts-ignore
   onFileChange = (file) => {
     if (!file) {
       return;
@@ -37,18 +41,19 @@ class FormContainer extends Component {
     const reader = new FileReader();
     reader.readAsText(file, "UTF-8");
     reader.onload = this.onLoadFile;
-    reader.onerror = function (evt) {
+    reader.onerror = function () {
       alert("Ошибка!");
     };
   };
 
-  getAutocompleteList = (k) => {
+  getAutocompleteList = (k: any) => {
+    // @ts-ignore
     const { data, setData } = this.props;
 
-    const items = JSON.parse(localStorage.getItem(k)) || [];
+    const items = JSON.parse(localStorage.getItem(k) || "[]") || [];
     if (items.length < 1) return null;
     return [
-      items.map((v) => {
+      items.map((v: any) => {
         if (data[k] === v) return null;
         return (
           <Dropdown.Item href="#" onClick={() => setData(k, v)}>
@@ -72,20 +77,27 @@ class FormContainer extends Component {
 
   render() {
     const {
+      // @ts-ignore
       data,
+      // @ts-ignore
       setData,
+      // @ts-ignore
       onUpdateSupplementarySheet,
+      // @ts-ignore
       onAddSupplementarySheet,
+      // @ts-ignore
       onRemoveSupplementarySheet,
     } = this.props;
 
     const ss_weight = data.supplementary_sheet.map(
-      (g) => +g.ves_2_3 + +g.ves_2_2 + +g.ves_2_1 || 0
+      (g: any) => +g.ves_2_3 + +g.ves_2_2 + +g.ves_2_1 || 0
     );
 
     const weight = `${
       Math.round(
-        (+data.ves35 + ss_weight.reduce((p, a) => p + a, 0) + Number.EPSILON) *
+        (+data.ves35 +
+          ss_weight.reduce((p: any, a: any) => p + a, 0) +
+          Number.EPSILON) *
           100
       ) / 100 || 0
     }`;
@@ -93,7 +105,9 @@ class FormContainer extends Component {
     return (
       <>
         <input
+          // @ts-ignore
           onChange={(e) => this.onFileChange(e.target.files[0])}
+          // @ts-ignore
           ref={this.fileInput}
           type={"file"}
           accept={".bsx"}
@@ -112,6 +126,7 @@ class FormContainer extends Component {
                 <Button
                   className={"me-2"}
                   variant={"success"}
+                  // @ts-ignore
                   onClick={() => this.fileInput.current.click()}
                 >
                   Импорт
@@ -119,6 +134,7 @@ class FormContainer extends Component {
                 <Button
                   className={"me-5"}
                   variant={"success"}
+                  // @ts-ignore
                   onClick={() => this.props.export()}
                 >
                   Экспорт
@@ -126,6 +142,7 @@ class FormContainer extends Component {
 
                 <Button
                   className={"me-2"}
+                  // @ts-ignore
                   onClick={() => this.props.onSubmit()}
                 >
                   Отправить
@@ -142,6 +159,7 @@ class FormContainer extends Component {
                 <Button
                   variant={"danger"}
                   onClick={() =>
+                    // @ts-ignore
                     window.confirm("Вы уверены?") && this.props.onReset()
                   }
                 >
@@ -263,16 +281,18 @@ class FormContainer extends Component {
                       </Form.Label>
                       <div className="d-flex justify-content-center">
                         <Form.Control
-                          onChange={(e) => setData("form1", e.target.value)}
                           type="text"
+                          disabled={true}
                           placeholder="1"
-                          value={data.form1}
+                          value={"1"}
                         />
                         <Form.Control
-                          onChange={(e) => setData("form2", e.target.value)}
+                          disabled={true}
                           type="text"
                           placeholder="2"
-                          value={data.form2}
+                          value={(
+                            data.supplementary_sheet.length + 1
+                          ).toString()}
                         />
                       </div>
                     </Form.Group>
@@ -574,7 +594,6 @@ class FormContainer extends Component {
                         Товар
                       </Form.Label>
                       <Form.Control
-                        onChange={(e) => setData("tvr32", e.target.value)}
                         type="text"
                         disabled={true}
                         placeholder=""
@@ -872,12 +891,14 @@ class FormContainer extends Component {
               </Card.Body>
             </Card>
 
-            {data.supplementary_sheet.map((value, index) => (
+            {data.supplementary_sheet.map((value: any, index: number) => (
               <SupplementarySheetComponent
+                // @ts-ignore
                 data={value}
+                globalData={data}
                 id={index + 1}
                 onRemove={() => onRemoveSupplementarySheet(index)}
-                onUpdate={(name, value) =>
+                onUpdate={(name: any, value: any) =>
                   onUpdateSupplementarySheet(index, name, value)
                 }
               />

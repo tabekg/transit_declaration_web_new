@@ -1,6 +1,7 @@
 import { Button } from "react-bootstrap";
-import qr_code from "../styles/QR_2.jpg";
+import qr_code from "../assets/QR.jpg";
 
+// @ts-ignore
 function ResultContainer({ data: props, goBack }) {
   const print = () => {
     // localStorage.setItem(
@@ -14,15 +15,17 @@ function ResultContainer({ data: props, goBack }) {
   };
 
   const ss_weight = props.supplementary_sheet.map(
-    (g) => +g.ves_2_3 + +g.ves_2_2 + +g.ves_2_1 || 0
+    (g: any) => +g.ves_2_3 + +g.ves_2_2 + +g.ves_2_1 || 0
   );
 
   const weight = `${(
     Math.round(
-      (+props.ves35 + ss_weight.reduce((p, a) => p + a, 0) + Number.EPSILON) *
+      (+props.ves35 +
+        ss_weight.reduce((p: any, a: any) => p + a, 0) +
+        Number.EPSILON) *
         100
     ) / 100 || 0
-  ).toFixed(2)}`;
+  ).toFixed(3)}`;
 
   return (
     <>
@@ -198,11 +201,20 @@ function ResultContainer({ data: props, goBack }) {
           </div>
           <div className={"form div"}>
             <span style={{ marginTop: 0, paddingTop: 0 }}>3 Формы</span>
-            <span className="num1">{props.form1}</span>
-            <span className="num2">{props.form2}</span>
+            <span className="num1">1</span>
+            <span className="num2">
+              {(props.supplementary_sheet.length + 1).toString()}
+            </span>
           </div>
           <div className={"otpr div"}>
-            <span style={{ paddingTop: 0, marginTop: 0, marginRight: 0 }}>
+            <span
+              style={{
+                paddingTop: 0,
+                marginTop: 0,
+                marginRight: 0,
+                whiteSpace: "nowrap",
+              }}
+            >
               4 Отгр. спец
             </span>
           </div>
@@ -467,7 +479,7 @@ function ResultContainer({ data: props, goBack }) {
               <span className={"cod_1_span_2"}>
                 <span className="tite_span">35 Вес брутто (кг)</span>
                 <span style={{ marginTop: -15 }} className=" content_span_2">
-                  {props.ves35}
+                  {(+props.ves35.replaceAll(",", ".")).toFixed(3)}
                 </span>
               </span>
               <span className={"cod_1_span_3"}> </span>
@@ -764,7 +776,7 @@ function ResultContainer({ data: props, goBack }) {
               <span className="content_span_2">{props.organ53}</span>
             </div>
           </div>
-          <div className={"otmetki div"} style={{ borer: "none" }}>
+          <div className={"otmetki div"}>
             <div className="otmetki_1 div">
               <span className="title_span">
                 <b> D</b> ОТМЕТКИ ОРГАНА ОТПРАВЛЕНИЯ
@@ -844,7 +856,7 @@ function ResultContainer({ data: props, goBack }) {
           </div>
         </div>
 
-        {props.supplementary_sheet.map((v) => (
+        {props.supplementary_sheet.map((v: any, i: number) => (
           <>
             <div style={{ height: 16 }}></div>
             <div className="gl div">
@@ -883,13 +895,15 @@ function ResultContainer({ data: props, goBack }) {
                   3 Формы
                 </span>
                 <div className="form-3 div" style={{ textAlign: "center" }}>
-                  <span className="content_span_2 mt-1">{v.form_2_1}</span>
+                  <span className="content_span_2 mt-1">
+                    {(i + 2).toString()}
+                  </span>
                 </div>
                 <span
                   className="content_span_2"
                   style={{ position: "absolute", left: 50, top: 105 }}
                 >
-                  {v.form_2_2}
+                  {(props.supplementary_sheet.length + 1).toString()}
                 </span>
                 <div className="form-3-2 div" />
               </div>
@@ -940,7 +954,7 @@ function ResultContainer({ data: props, goBack }) {
                         fontSize: 14,
                       }}
                     >
-                      {v.tovar_2_1}
+                      {(i + 2).toString()}
                     </span>
                     <span className="number-tov">№</span>
                   </span>
@@ -981,7 +995,7 @@ function ResultContainer({ data: props, goBack }) {
                         style={{ marginTop: -15 }}
                         className=" content_span_2"
                       >
-                        {v.ves_2_1}
+                        {(+v.ves_2_1.replaceAll(",", ".")).toFixed(3)}
                       </span>
                     </span>
                     <span className={"cod_1_span_32"}> </span>
@@ -997,7 +1011,9 @@ function ResultContainer({ data: props, goBack }) {
                       40 Общая декларация/Предшествующий документ
                     </span>
                     <span style={{ marginTop: 4 }} className=" content_span_2">
-                      {v.all_declaration_1}
+                      {(props.decl40.split("/")[0] || "") +
+                        "/" +
+                        ((i + 1) * 3 - 3 + 2)}
                     </span>
                   </div>
                   <div className="col_52 div">
@@ -1122,7 +1138,7 @@ function ResultContainer({ data: props, goBack }) {
                         fontSize: 14,
                       }}
                     >
-                      {v.tovar_2_2}
+                      {(i + 3).toString()}
                     </span>
                     <span className="title_span number-tov">№</span>
                   </span>
@@ -1163,7 +1179,7 @@ function ResultContainer({ data: props, goBack }) {
                         style={{ marginTop: -15 }}
                         className=" content_span_2"
                       >
-                        {v.ves_2_2}
+                        {(+v.ves_2_2.replaceAll(",", ".")).toFixed(3)}
                       </span>
                     </span>
                     <span className={"cod_1_span_32"}> </span>
@@ -1179,7 +1195,9 @@ function ResultContainer({ data: props, goBack }) {
                       40 Общая декларация/Предшествующий документ
                     </span>
                     <span style={{ marginTop: 4 }} className=" content_span_2">
-                      {v.all_declaration_2}
+                      {(props.decl40.split("/")[0] || "") +
+                        "/" +
+                        ((i + 1) * 3 - 3 + 3)}
                     </span>
                   </div>
                   <div className="col_52 div">
@@ -1214,7 +1232,7 @@ function ResultContainer({ data: props, goBack }) {
                         }}
                         className={"content_span"}
                       >
-                        {v.valut_st_summ_2}
+                        {(+v.valut_st_summ_2.replaceAll(",", ".")).toFixed(2)}
                       </span>
                     </div>
                     <div className="col_62 div">
@@ -1306,7 +1324,7 @@ function ResultContainer({ data: props, goBack }) {
                         fontSize: 14,
                       }}
                     >
-                      {v.tovar_2_3}
+                      {(i + 4).toString()}
                     </span>
                     <span className="number-tov">№</span>
                   </span>
@@ -1347,7 +1365,7 @@ function ResultContainer({ data: props, goBack }) {
                         style={{ marginTop: -15, fontSize: 13 }}
                         className=" content_span_2"
                       >
-                        {v.ves_2_3}
+                        {(+v.ves_2_3.replaceAll(",", ".")).toFixed(3)}
                       </span>
                     </span>
                     <span className={"cod_1_span_32"}> </span>
@@ -1363,7 +1381,9 @@ function ResultContainer({ data: props, goBack }) {
                       40 Общая декларация/Предшествующий документ
                     </span>
                     <span style={{ marginTop: 4 }} className=" content_span_2">
-                      {v.all_declaration_3}
+                      {(props.decl40.split("/")[0] || "") +
+                        "/" +
+                        ((i + 1) * 3 - 3 + 4)}
                     </span>
                   </div>
                   <div className="col_52 div">
@@ -1398,7 +1418,7 @@ function ResultContainer({ data: props, goBack }) {
                         }}
                         className={"content_span"}
                       >
-                        {v.valut_st_summ_3}
+                        {(+v.valut_st_summ_3.replaceAll(",", ".")).toFixed(2)}
                       </span>
                     </div>
                     <div

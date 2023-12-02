@@ -6,6 +6,7 @@ import "moment/locale/ru";
 import x from "crypto-js";
 import "./App.css";
 import "bootstrap/dist/css/bootstrap.min.css";
+import { randomIntFromInterval } from "./utils";
 
 moment.locale("ru");
 // @ts-ignore
@@ -20,7 +21,6 @@ const INITIAL_DATA = {
       valut_st_usd_2: "USD",
       valut_st_usd_1: "USD",
       otprav_2: "CM. ГР. 2-8",
-      tovar_2: "2",
       kod_tovara_2: "6208883941",
       otpr_2: "417210724/070921/000000394",
       mark_kol_1: "1 ",
@@ -101,8 +101,6 @@ const INITIAL_DATA = {
   otprav: "URUMQI KAILINGDA INTERNATIONAL TRADE CO. LTD, КИТАЙ",
   organ: "41762107/011223/0006842",
   get8: "LLC FE TASHKENT TRADE CENTER, УЗБЕКИСТАН, Г. ТАШКЕНТ,",
-  form1: "1",
-  form2: "9",
   tv5: "23",
   mst6: "1131",
   strana: "КИТАЙ",
@@ -245,10 +243,6 @@ function App() {
     localStorage.setItem("___data", JSON.stringify(data));
   }, [data]);
 
-  useEffect(() => {
-    onSetData("form2", (data.supplementary_sheet.length + 1).toString());
-  }, [data.supplementary_sheet]);
-
   const onSetData = (n: any, v: any) => {
     // @ts-ignore
     setData((p) => {
@@ -259,6 +253,10 @@ function App() {
           s["otpr_2"] = v;
           return s;
         });
+      } else if (n === "data") {
+        g["dann"] = moment(v)
+          .add(randomIntFromInterval(30, 90), "seconds")
+          .format("DD.MM.YYYY HH:mm:ss");
       } else if (n === "dop44") {
         g["supplementary_sheet"] = g["supplementary_sheet"].map((s: any) => {
           s["dop_info_2_1"] = v;

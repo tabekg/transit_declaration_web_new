@@ -1,9 +1,9 @@
 import { Component, useCallback } from "react";
 import { Button, Card, Col, Form, Row } from "react-bootstrap";
 
-function SelectButtons(props) {
+function SelectButtons(props: any) {
   const onSelect = useCallback(
-    (t) => {
+    (t: any) => {
       const v = (props.value || "").split(" - ");
       props.select(`${t} - ${v[1] || props.value || ""}`);
     },
@@ -19,9 +19,9 @@ function SelectButtons(props) {
   );
 }
 
-function SelectButtonsAdditional(props) {
+function SelectButtonsAdditional(props: any) {
   const onSelect = useCallback(
-    (t) => {
+    (t: any) => {
       const v = props.value.split("   ");
       props.select(`${v[0] || props.value}   ${t}`);
     },
@@ -40,7 +40,8 @@ function SelectButtonsAdditional(props) {
 
 class SupplementarySheetComponent extends Component {
   render() {
-    const { data, onUpdate, id } = this.props;
+    // @ts-ignore
+    const { data, onUpdate, globalData, id } = this.props;
 
     return (
       <Card className={"mt-4"}>
@@ -51,6 +52,7 @@ class SupplementarySheetComponent extends Component {
               variant={"danger"}
               size={"sm"}
               onClick={() =>
+                // @ts-ignore
                 window.confirm("Вы уверены?") && this.props.onRemove()
               }
             >
@@ -100,16 +102,18 @@ class SupplementarySheetComponent extends Component {
                 </Form.Label>
                 <div className="d-flex justify-content-center">
                   <Form.Control
-                    onChange={(e) => onUpdate("form_2_1", e.target.value)}
+                    disabled={true}
                     type="text"
-                    value={data.form_2_1}
+                    value={(id + 1).toString()}
                     placeholder="1"
                   />
                   <Form.Control
-                    onChange={(e) => onUpdate("form_2_2", e.target.value)}
                     type="text"
                     placeholder="2"
-                    value={data.form_2_2}
+                    disabled={true}
+                    value={(
+                      globalData.supplementary_sheet.length + 1
+                    ).toString()}
                   />
                 </div>
               </Form.Group>
@@ -142,7 +146,6 @@ class SupplementarySheetComponent extends Component {
                 </Form.Label>
                 <Form.Control
                   onChange={(e) => onUpdate("mark_kol_1", e.target.value)}
-                  rows={3}
                   value={data.mark_kol_1}
                   type="text"
                   placeholder="Маркировка и количество"
@@ -152,7 +155,6 @@ class SupplementarySheetComponent extends Component {
                   onChange={(e) =>
                     onUpdate("number_containers_1", e.target.value)
                   }
-                  rows={3}
                   type="text"
                   // disabled={true}
                   value={data.number_containers_1}
@@ -161,14 +163,13 @@ class SupplementarySheetComponent extends Component {
                 <Form.Control
                   className={"mt-2"}
                   onChange={(e) => onUpdate("col_otlichitel_1", e.target.value)}
-                  rows={3}
                   value={data.col_otlichitel_1}
                   type="text"
                   placeholder="количество и отличител"
                 />
                 <SelectButtons
                   value={data.col_otlichitel_1}
-                  select={(t) => onUpdate("col_otlichitel_1", t)}
+                  select={(t: any) => onUpdate("col_otlichitel_1", t)}
                 />
               </Form.Group>
             </Col>
@@ -178,11 +179,10 @@ class SupplementarySheetComponent extends Component {
                   Товар
                 </Form.Label>
                 <Form.Control
-                  onChange={(e) => onUpdate("tovar_2_1", e.target.value)}
+                  disabled={true}
                   type="text"
-                  value={data.tovar_2_1}
+                  value={(id * 3 - 3 + 2).toString()}
                   placeholder=""
-                  // disabled={true}
                 />
               </Form.Group>
             </Col>
@@ -205,7 +205,9 @@ class SupplementarySheetComponent extends Component {
                   Вес(кг)
                 </Form.Label>
                 <Form.Control
-                  onChange={(e) => onUpdate("ves_2_1", e.target.value)}
+                  onChange={(e) =>
+                    onUpdate("ves_2_1", e.target.value.replaceAll(",", "."))
+                  }
                   type="text"
                   value={data.ves_2_1}
                   placeholder=""
@@ -218,11 +220,13 @@ class SupplementarySheetComponent extends Component {
                   40 Общая декларация
                 </Form.Label>
                 <Form.Control
-                  onChange={(e) =>
-                    onUpdate("all_declaration_1", e.target.value)
-                  }
+                  disabled={true}
                   type="text"
-                  value={data.all_declaration_1}
+                  value={
+                    (globalData.decl40.split("/")[0] || "") +
+                    "/" +
+                    (id * 3 - 3 + 2)
+                  }
                   placeholder=""
                 />
               </Form.Group>
@@ -258,7 +262,7 @@ class SupplementarySheetComponent extends Component {
                 </div>
                 <SelectButtonsAdditional
                   value={data.usd_2_1}
-                  select={(e) => {
+                  select={(e: any) => {
                     onUpdate("usd_2_1", e.split("   ")[1] ? e : "");
                     onUpdate("cod_di_1", e.split("   ")[1] || "");
                   }}
@@ -278,7 +282,10 @@ class SupplementarySheetComponent extends Component {
                   />
                   <Form.Control
                     onChange={(e) =>
-                      onUpdate("valut_st_summ_1", e.target.value)
+                      onUpdate(
+                        "valut_st_summ_1",
+                        e.target.value.replaceAll(",", ".")
+                      )
                     }
                     type="text"
                     value={data.valut_st_summ_1}
@@ -314,7 +321,6 @@ class SupplementarySheetComponent extends Component {
                 </Form.Label>
                 <Form.Control
                   onChange={(e) => onUpdate("mark_kol_2", e.target.value)}
-                  rows={3}
                   value={data.mark_kol_2}
                   type="text"
                   placeholder="Маркировка и количество"
@@ -324,7 +330,6 @@ class SupplementarySheetComponent extends Component {
                   onChange={(e) =>
                     onUpdate("number_containers_2", e.target.value)
                   }
-                  rows={3}
                   type="text"
                   // disabled={true}
                   value={data.number_containers_2}
@@ -333,14 +338,13 @@ class SupplementarySheetComponent extends Component {
                 <Form.Control
                   className={"mt-2"}
                   onChange={(e) => onUpdate("col_otlichitel_2", e.target.value)}
-                  rows={3}
                   value={data.col_otlichitel_2}
                   type="text"
                   placeholder="количество и отличител"
                 />
                 <SelectButtons
                   value={data.col_otlichitel_2}
-                  select={(t) => onUpdate("col_otlichitel_2", t)}
+                  select={(t: any) => onUpdate("col_otlichitel_2", t)}
                 />
               </Form.Group>
             </Col>
@@ -350,11 +354,10 @@ class SupplementarySheetComponent extends Component {
                   Товар
                 </Form.Label>
                 <Form.Control
-                  onChange={(e) => onUpdate("tovar_2_2", e.target.value)}
                   type="text"
-                  value={data.tovar_2_2}
+                  value={(id * 3 - 3 + 3).toString()}
                   placeholder=""
-                  // disabled={true}
+                  disabled={true}
                 />
               </Form.Group>
             </Col>
@@ -377,7 +380,9 @@ class SupplementarySheetComponent extends Component {
                   Вес(кг)
                 </Form.Label>
                 <Form.Control
-                  onChange={(e) => onUpdate("ves_2_2", e.target.value)}
+                  onChange={(e) =>
+                    onUpdate("ves_2_2", e.target.value.replaceAll(",", "."))
+                  }
                   type="text"
                   value={data.ves_2_2}
                   placeholder=""
@@ -390,11 +395,13 @@ class SupplementarySheetComponent extends Component {
                   40 Общая декларация
                 </Form.Label>
                 <Form.Control
-                  onChange={(e) =>
-                    onUpdate("all_declaration_2", e.target.value)
-                  }
+                  disabled={true}
                   type="text"
-                  value={data.all_declaration_2}
+                  value={
+                    (globalData.decl40.split("/")[0] || "") +
+                    "/" +
+                    (id * 3 - 3 + 3)
+                  }
                   placeholder=""
                 />
               </Form.Group>
@@ -430,7 +437,7 @@ class SupplementarySheetComponent extends Component {
                 </div>
                 <SelectButtonsAdditional
                   value={data.usd_2_2}
-                  select={(e) => {
+                  select={(e: any) => {
                     onUpdate("usd_2_2", e.split("   ")[1] ? e : "");
                     onUpdate("cod_di_2", e.split("   ")[1] || "");
                   }}
@@ -450,7 +457,10 @@ class SupplementarySheetComponent extends Component {
                   />
                   <Form.Control
                     onChange={(e) =>
-                      onUpdate("valut_st_summ_2", e.target.value)
+                      onUpdate(
+                        "valut_st_summ_2",
+                        e.target.value.replaceAll(",", ".")
+                      )
                     }
                     type="text"
                     value={data.valut_st_summ_2}
@@ -486,7 +496,6 @@ class SupplementarySheetComponent extends Component {
                 </Form.Label>
                 <Form.Control
                   onChange={(e) => onUpdate("mark_kol_3", e.target.value)}
-                  rows={3}
                   value={data.mark_kol_3}
                   type="text"
                   placeholder="Маркировка и количество"
@@ -497,7 +506,6 @@ class SupplementarySheetComponent extends Component {
                   onChange={(e) =>
                     onUpdate("number_containers_3", e.target.value)
                   }
-                  rows={3}
                   type="text"
                   value={data.number_containers_3}
                   placeholder="Номер контейнеров"
@@ -505,14 +513,13 @@ class SupplementarySheetComponent extends Component {
                 <Form.Control
                   className={"mt-2"}
                   onChange={(e) => onUpdate("col_otlichitel_3", e.target.value)}
-                  rows={3}
                   value={data.col_otlichitel_3}
                   type="text"
                   placeholder="количество и отличител"
                 />
                 <SelectButtons
                   value={data.col_otlichitel_3}
-                  select={(t) => onUpdate("col_otlichitel_3", t)}
+                  select={(t: any) => onUpdate("col_otlichitel_3", t)}
                 />
               </Form.Group>
             </Col>
@@ -522,11 +529,10 @@ class SupplementarySheetComponent extends Component {
                   Товар
                 </Form.Label>
                 <Form.Control
-                  onChange={(e) => onUpdate("tovar_2_3", e.target.value)}
                   type="text"
-                  value={data.tovar_2_3}
+                  value={(id * 3 - 3 + 4).toString()}
                   placeholder=""
-                  // disabled={true}
+                  disabled={true}
                 />
               </Form.Group>
             </Col>
@@ -549,7 +555,9 @@ class SupplementarySheetComponent extends Component {
                   Вес(кг)
                 </Form.Label>
                 <Form.Control
-                  onChange={(e) => onUpdate("ves_2_3", e.target.value)}
+                  onChange={(e) =>
+                    onUpdate("ves_2_3", e.target.value.replaceAll(",", "."))
+                  }
                   type="text"
                   value={data.ves_2_3}
                   placeholder=""
@@ -562,11 +570,13 @@ class SupplementarySheetComponent extends Component {
                   40 Общая декларация
                 </Form.Label>
                 <Form.Control
-                  onChange={(e) =>
-                    onUpdate("all_declaration_3", e.target.value)
-                  }
+                  disabled={true}
                   type="text"
-                  value={data.all_declaration_3}
+                  value={
+                    (globalData.decl40.split("/")[0] || "") +
+                    "/" +
+                    (id * 3 - 3 + 4)
+                  }
                   placeholder=""
                 />
               </Form.Group>
@@ -602,7 +612,7 @@ class SupplementarySheetComponent extends Component {
                 </div>
                 <SelectButtonsAdditional
                   value={data.usd_2_3}
-                  select={(e) => {
+                  select={(e: any) => {
                     onUpdate("usd_2_3", e.split("   ")[1] ? e : "");
                     onUpdate("cod_di_3", e.split("   ")[1] || "");
                   }}
@@ -623,7 +633,10 @@ class SupplementarySheetComponent extends Component {
                   />
                   <Form.Control
                     onChange={(e) =>
-                      onUpdate("valut_st_summ_3", e.target.value)
+                      onUpdate(
+                        "valut_st_summ_3",
+                        e.target.value.replaceAll(",", ".")
+                      )
                     }
                     type="text"
                     value={data.valut_st_summ_3}
