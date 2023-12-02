@@ -138,14 +138,6 @@ const INITIAL_DATA = {
 console.log(Object.keys(INITIAL_DATA).length);
 
 const getSupplementarySheetInitData = (data: any) => {
-  const last_supplementary_sheet =
-    data.supplementary_sheet[data.supplementary_sheet.length - 1];
-
-  const last_declaration = last_supplementary_sheet
-    ? last_supplementary_sheet.all_declaration_3
-    : data.decl40;
-  const last_declaration_split = last_declaration.split("/");
-
   return {
     dek_2_2: "TT",
     dek_2_1: "TP",
@@ -154,12 +146,6 @@ const getSupplementarySheetInitData = (data: any) => {
     valut_st_usd_1: "USD",
 
     otpr_2: data.organ,
-    all_declaration_1:
-      last_declaration_split[0] + "/" + (+last_declaration_split[1] + 1),
-    all_declaration_2:
-      last_declaration_split[0] + "/" + (+last_declaration_split[1] + 2),
-    all_declaration_3:
-      last_declaration_split[0] + "/" + (+last_declaration_split[1] + 3),
     dop_info_2_1: data.dop44,
     dop_info_2_2: data.dop44,
     dop_info_2_3: data.dop44,
@@ -366,7 +352,6 @@ function App() {
           )
         ).toString(x.enc.Utf8)
       );
-      console.log(d);
       // eslint-disable-next-line no-eval
       setData({
         ...INITIAL_DATA,
@@ -388,6 +373,7 @@ function App() {
           onImport={(d: any) => onImport(d)}
           setData={(n: any, v: any) => onSetData(n, v)}
           data={data}
+          onSetGlobalData={setData}
           onRemoveSupplementarySheet={(i: number) =>
             removeSupplementarySheet(i)
           }
