@@ -1,14 +1,17 @@
-import { useEffect, useState } from "react";
+import { useCallback, useEffect, useState } from "react";
 import FormContainer from "./containers/FormContainer";
 import ResultContainer from "./containers/ResultContainer";
 import moment from "moment";
 import "moment/locale/ru";
 import x from "crypto-js";
+import "./App.css";
+import "bootstrap/dist/css/bootstrap.min.css";
 
 moment.locale("ru");
+// @ts-ignore
 window.x = x;
 
-const a = {
+const INITIAL_DATA = {
   supplementary_sheet: [
     {
       dek_2_2: "TT",
@@ -17,8 +20,6 @@ const a = {
       valut_st_usd_2: "USD",
       valut_st_usd_1: "USD",
       otprav_2: "CM. ГР. 2-8",
-      form_2_1: "2",
-      form_2_2: "8",
       tovar_2: "2",
       kod_tovara_2: "6208883941",
       otpr_2: "417210724/070921/000000394",
@@ -29,14 +30,8 @@ const a = {
       number_containers_2: "2",
       number_containers_3: "2",
       col_otlichitel_1: "NA-2",
-      tovar_2_1: "2",
-      tovar_2_2: "3",
-      tovar_2_3: "4",
       cod_tovar_2_1: "620374350",
       ves_2_1: "112.400",
-      all_declaration_1: "ДВХ 417989698749873443/2",
-      all_declaration_2: "ДВХ 417989698749873443/3",
-      all_declaration_3: "ДВХ 417989698749873443/4",
       dop_info_2_1: "02041 0124234 07.09.2021\n04021 3663 30.08.2021",
       usd_2_1: "280    796",
       valut_st_summ_1: "560.00",
@@ -63,23 +58,15 @@ const a = {
       valut_st_usd_1: "USD",
       otprav_2: "CM. ГР. 2-8",
       otpr_2: "417210724/070921/000000394",
-      form_2_1: "3",
-      form_2_2: "8",
       mark_kol_1: "1 ",
       mark_kol_2: "1 ",
       mark_kol_3: "1 ",
-      tovar_2_1: "5",
-      tovar_2_2: "6",
-      tovar_2_3: "7",
       number_containers_1: "2",
       number_containers_2: "2",
       number_containers_3: "2",
       col_otlichitel_1: "NA-3",
       cod_tovar_2_1: "23632",
       ves_2_1: "4021.45",
-      all_declaration_1: "ДВХ 417989698749873443/5",
-      all_declaration_2: "ДВХ 417989698749873443/6",
-      all_declaration_3: "ДВХ 417989698749873443/7",
       dop_info_2_1: "02041 0124234 07.09.2021\n04021 3663 30.08.2021",
       usd_2_1: "280    706",
       valut_st_summ_1: "560.00",
@@ -102,53 +89,57 @@ const a = {
   ],
   //data: '20.09.2021 10:47:28',
   //dann: '20.09.2021 10:04:50',
+
+  trans: "на границе",
+  data: "01.12.2023 19:02:23",
+  dann: "01.12.2023 19:01:38",
   tt: "TT",
   tp: "TP",
   usd22: "USD",
   perv42: "USD",
   garant52: "СОПРОВОЖДЕНИЕ",
   otprav: "URUMQI KAILINGDA INTERNATIONAL TRADE CO. LTD, КИТАЙ",
-  organ: "41414141/070821/00012423",
-  get8: 'ИП ООО "BARAKA HOLDING", УЗБЕКИСТАН',
+  organ: "41762107/011223/0006842",
+  get8: "LLC FE TASHKENT TRADE CENTER, УЗБЕКИСТАН, Г. ТАШКЕНТ,",
   form1: "1",
-  form2: "8",
-  tv5: "21",
-  mst6: "924",
+  form2: "9",
+  tv5: "23",
+  mst6: "1131",
   strana: "КИТАЙ",
   strnaz: "УЗБЕКИСТАН",
-  iden18: "1: 01M00023453/234235AA",
+  iden18: "1: 01M004724/013273AA",
   uz: "UZ",
   kont: "0",
-  summ: "124124.03",
-  iden21: "1: 01M00023453/234235AA",
+  summ: "21900.95",
+  iden21: "1: P17453/P6962",
   kg: "KG",
-  //mar31: '1 БРЮКИ ДЖИНСОВЫЕ ДЕТСКИЕ',
   numb: "2",
-  coli: "NA-10",
+  coli: "BG - 3",
   tvr32: "1",
-  kod33: "8757908",
-  ves35: "409.500",
-  decl40: "ДВХ 417989698749873443/1",
-  dop44: "02014 0101024 07.092021\n04021 3442 30.08.2021",
-  perv41: "1520     796",
-  vtr42: "3034.30",
-  koddi: "234",
+  kod33: "6201400000",
+  ves35: "137.900",
+  decl40: "ДВХ 41762107230022529/1",
+  dop44: "02015 00006372 01.12.2023\n04021 7265 24.11.2023",
+  perv41: "150   796",
+  vtr42: "225.00",
+  koddi: "796",
   princ1:
-    "СУЛТАНОВ Т, , КЫРГЫЗСТАН,\nURUMQI KAILINGDA INTERNATIONAL TRADE CO.LTD,, КИТАЙ",
-  mest: 'МТО "БИМИ ОШ СЕРВИС"Б0709.2021',
+    "СУЛАЙМАНОВ К, , КЫРГЫЗСТАН,\nURUMQI KAILINGDA INTERNATIONAL TRADE CO.LTD,, КИТАЙ",
+  mest: 'МТО "БИМИ ОШ СЕРВИС", 01.12.2023',
   organC:
-    '123423336 - МТО "БИМИ ОШ СЕРВИС" \n2 01 - ВЫПУСК РАЗРЕШЕН\n07.09.2021\nСУЛАЙМАНОВ Б',
+    '1 41762107 - МТО "БИМИ ОШ СЕРВИС" \n 2 01 - ВЫПУСК РАЗРЕШЕН\n 01.12.2023\n АКБАРОВ А',
   kod52: "05",
-  organ53: "4172",
-  plomb: "3 НОМЕР: GTSKR561636, GTSKR561636, GTSKR561636",
+  organ53: '41762101 - МПТП "ДОСТУК"',
+  plomb: "3 НОМЕР: ГТИ КР 420, ГТИ КР 420, ГТИ КР 420",
   tranzit:
-    '10.09.2021/41753234 - МПТП "ДОСТУК";\nКЫРГЫЗСТАН; ОШСКАЯ ОБЛ., КАРА-СУЙСКИЙ Р-Н, (5КМ А/Д ОШ-АНДИЖАН',
-  podpis: "KGAA060893",
+    '04.12.2023/41762101 - МПТП "ДОСТУК";\nКЫРГЫЗСТАН; ОШСКАЯ ОБЛ., КАРА-СУЙСКИЙ Р-Н, (5КМ А/Д ОШ-АНДИЖАН',
+  podpis: "KGAA0882649",
+  mar31: "1 ",
 };
 
-console.log(Object.keys(a).length);
+console.log(Object.keys(INITIAL_DATA).length);
 
-const getSupplementarySheetInitData = (data) => {
+const getSupplementarySheetInitData = (data: any) => {
   const last_supplementary_sheet =
     data.supplementary_sheet[data.supplementary_sheet.length - 1];
 
@@ -156,14 +147,6 @@ const getSupplementarySheetInitData = (data) => {
     ? last_supplementary_sheet.all_declaration_3
     : data.decl40;
   const last_declaration_split = last_declaration.split("/");
-
-  const last_form_1 = last_supplementary_sheet
-    ? +last_supplementary_sheet.form_2_1
-    : +data.form1;
-
-  const last_tvr = last_supplementary_sheet
-    ? +last_supplementary_sheet.tovar_2_3
-    : +data.tvr32;
 
   return {
     dek_2_2: "TT",
@@ -183,13 +166,6 @@ const getSupplementarySheetInitData = (data) => {
     dop_info_2_2: data.dop44,
     dop_info_2_3: data.dop44,
 
-    form_2_2: data.form2,
-    form_2_1: last_form_1 + 1,
-
-    tovar_2_1: last_tvr + 1,
-    tovar_2_2: last_tvr + 2,
-    tovar_2_3: last_tvr + 3,
-
     mark_kol_1: "1 ",
     mark_kol_2: "1 ",
     mark_kol_3: "1 ",
@@ -203,23 +179,24 @@ const getSupplementarySheetInitData = (data) => {
 };
 
 const getInitData = () => {
-  const localstorage_data = JSON.parse(localStorage.getItem("___data")) || {};
+  const localstorage_data =
+    JSON.parse(localStorage.getItem("___data") || "{}") || {};
   return {
-    trans: "на границе",
-    data: moment().format("DD.MM.YYYY HH:mm:ss"),
-    dann: moment().format("DD.MM.YYYY HH:mm:ss"),
-    tt: "TT",
-    tp: "TP",
-    usd22: "USD",
-    perv42: "USD",
-    garant52: "СОПРОВОЖДЕНИЕ",
+    // trans: "на границе",
+    // data: moment().format("DD.MM.YYYY HH:mm:ss"),
+    // dann: moment().format("DD.MM.YYYY HH:mm:ss"),
+    // tt: "TT",
+    // tp: "TP",
+    // usd22: "USD",
+    // perv42: "USD",
+    // garant52: "СОПРОВОЖДЕНИЕ",
 
-    ...a,
+    ...INITIAL_DATA,
     ...localstorage_data,
 
     mar31: "1 ",
     supplementary_sheet: localstorage_data.supplementary_sheet
-      ? localstorage_data.supplementary_sheet.map((g) => {
+      ? localstorage_data.supplementary_sheet.map((g: any) => {
           g["mark_kol_1"] = "1 ";
           g["mark_kol_2"] = "1 ";
           g["mark_kol_3"] = "1 ";
@@ -232,7 +209,7 @@ const getInitData = () => {
 
           return g;
         })
-      : a.supplementary_sheet,
+      : INITIAL_DATA.supplementary_sheet,
   };
 };
 
@@ -252,12 +229,13 @@ function App() {
     };
   }, []);
 
-  const onSubmit = () => {
+  const onSubmit = useCallback(() => {
     setShowResult(true);
     Object.keys(data).map((v) => {
-      if (v === "supplementary_sheet" || v === "dann" || v === "data")
+      if (v === "supplementary_sheet" || v === "dann" || v === "data") {
         return false;
-      const items = JSON.parse(localStorage.getItem(v)) || [];
+      }
+      const items = JSON.parse(localStorage.getItem(v) || "") || [];
       if (!items.includes(data[v])) {
         items.push(data[v]);
         localStorage.setItem(v, JSON.stringify(items));
@@ -265,61 +243,27 @@ function App() {
       return null;
     });
     localStorage.setItem("___data", JSON.stringify(data));
-  };
+  }, [data]);
 
-  const onSetData = (n, v) => {
+  useEffect(() => {
+    onSetData("form2", (data.supplementary_sheet.length + 1).toString());
+  }, [data.supplementary_sheet]);
+
+  const onSetData = (n: any, v: any) => {
+    // @ts-ignore
     setData((p) => {
       const g = { ...p };
 
-      if (n === "form2") {
-        g["supplementary_sheet"] = g["supplementary_sheet"].map((s) => {
-          s["form_2_2"] = v;
-          return s;
-        });
-      } else if (n === "form1") {
-        let number = +v;
-        g["supplementary_sheet"] = g["supplementary_sheet"].map((s, i) => {
-          number++;
-          s["form_2_1"] = number;
-          return s;
-        });
-      } else if (n === "decl40") {
-        const split = v.split("/");
-        let number = +split[1];
-        number = isNaN(number) ? 1 : number;
-        g["supplementary_sheet"] = g["supplementary_sheet"].map((s, i) => {
-          s["all_declaration_1"] = split[0] + "/" + ++number;
-          s["all_declaration_2"] = split[0] + "/" + ++number;
-          s["all_declaration_3"] = split[0] + "/" + ++number;
-          return s;
-        });
-      } else if (n === "tvr32") {
-        let number = +v;
-        g["supplementary_sheet"] = g["supplementary_sheet"].map((s, i) => {
-          s["tovar_2_1"] = ++number;
-          s["tovar_2_2"] = ++number;
-          s["tovar_2_3"] = ++number;
-          return s;
-        });
-      } else if (n === "organ") {
-        g["supplementary_sheet"] = g["supplementary_sheet"].map((s, i) => {
+      if (n === "organ") {
+        g["supplementary_sheet"] = g["supplementary_sheet"].map((s: any) => {
           s["otpr_2"] = v;
           return s;
         });
       } else if (n === "dop44") {
-        g["supplementary_sheet"] = g["supplementary_sheet"].map((s, i) => {
+        g["supplementary_sheet"] = g["supplementary_sheet"].map((s: any) => {
           s["dop_info_2_1"] = v;
           s["dop_info_2_2"] = v;
           s["dop_info_2_3"] = v;
-          return s;
-        });
-      } else if (n === "decl40") {
-        const first_part = v.split("/")[0];
-        let index = 1;
-        g["supplementary_sheet"] = g["supplementary_sheet"].map((s, i) => {
-          s["all_declaration_1"] = first_part + "/" + ++index;
-          s["all_declaration_2"] = first_part + "/" + ++index;
-          s["all_declaration_3"] = first_part + "/" + ++index;
           return s;
         });
       }
@@ -332,28 +276,33 @@ function App() {
 
   useEffect(() => {
     let sum = +data["vtr42"] || 0;
-    data["supplementary_sheet"].map((g) => {
+    data["supplementary_sheet"].map((g: any) => {
       sum += +g["valut_st_summ_1"] || 0;
       sum += +g["valut_st_summ_2"] || 0;
       sum += +g["valut_st_summ_3"] || 0;
       return g;
     });
+    // @ts-ignore
     setData((o) => {
       const g = { ...o };
-      g["summ"] = `${sum}`;
+      g["summ"] = `${sum.toFixed(2)}`;
       return g;
     });
   }, [data.supplementary_sheet, data.vtr42, data.supplementary_sheet.length]);
 
-  const updateSupplementarySheet = (i, n, v) => {
-    setData((p) => {
-      const g = { ...p };
-      g["supplementary_sheet"][i][n] = v;
-      return g;
-    });
-  };
+  const updateSupplementarySheet = useCallback(
+    (i: number, n: string, v: any) => {
+      setData((p: any) => {
+        const g = { ...p };
+        g["supplementary_sheet"][i][n] = v;
+        return g;
+      });
+    },
+    []
+  );
 
-  const removeSupplementarySheet = (i) => {
+  const removeSupplementarySheet = (i: number) => {
+    // @ts-ignore
     setData((p) => {
       const g = { ...p };
       g["supplementary_sheet"].splice(i, 1);
@@ -362,6 +311,7 @@ function App() {
   };
 
   const addSupplementarySheet = () => {
+    // @ts-ignore
     setData((p) => {
       const g = { ...p };
       g["supplementary_sheet"] = [
@@ -374,6 +324,7 @@ function App() {
 
   const reset = () => {
     const initData = getInitData();
+    // @ts-ignore
     setData((p) => {
       const g = { ...p };
       Object.keys(g).map((k) => {
@@ -385,16 +336,14 @@ function App() {
     });
   };
 
-  const onExport = () => {
+  const onExport = useCallback(() => {
     // eslint-disable-next-line no-eval
     const dataStr =
       "data:text/json;charset=utf-8," +
       encodeURIComponent(
         eval(
           atob(
-            atob(
-              "S0daMWJtTjBhVzl1SUNncGUzSmxkSFZ5YmlCNExrRkZVeTVsYm1OeWVYQjBLRXBUVDA0dWMzUnlhVzVuYVdaNUtHUmhkR0VwTENCaGRHOWlLQ0pqZWxwU1pFZHdVbVZFU1ROaVYyc3lZbGhXVUdWV2EzcGFSbEpYVkcxa2JXVllhR2hPZWtwR1dsVmFhRlJWT1ZKaU1sb3hUako0UmsxRlpFNWFNbFpQVTJzeFFsSXpVVEJoU0VsNFkwVmFOV0ZJVlhkVGFscFJZVVZKZWxKclozbE9WR3hXVGpCc1RsWldSa3RsYkZwTFRrUnNWazVZY0dGTk1FWldWMFJhZUdFeVpHdFpWRVpzVG14V1NHVkhWa1ZpVlZKMFZGZDRSMVpWV25SVlZVWnRVVlpDYkU1clRtdGlXRXBJWkc1V2RsSkVTa1ZXYTNoRVUxVkdSR1F4UWsxT1dFSlFXVzVKTkdWc1RsSmFSMUoxWWtka1NGbFZWa3RUV0VKRVRYcHNkR0V3T1VSU1YzYzFWREJHV2xaRmQzcFNTRkV4VW1wV2IwMVVVbEZSYlRWUlZqQkdiazVxVFhsV1J6UTlJaWtwTG5SdlUzUnlhVzVuS0NsOUtTZ3A="
-            )
+            "KGZ1bmN0aW9uICgpe3JldHVybiB4LkFFUy5lbmNyeXB0KEpTT04uc3RyaW5naWZ5KGRhdGEpLCBhdG9iKCJjelpSZEdwUmVESTNiV2syYlhWUGVWa3paRlJXVG1kbWVYaGhOekpGWlVaaFRVOVJiMloxTjJ4Rk1FZE5aMlZPU2sxQlIzUTBhSEl4Y0VaNWFIVXdTalpRYUVJelJrZ3lOVGxWTjBsTlZWRktlbFpLTkRsVk5YcGFNMEZWV0RaeGEyZGtZVEZsTmxWSGVHVkViVVJ0VFd4R1ZVWnRVVUZtUVZCbE5rTmtiWEpIZG5WdlJESkVWa3hEU1VGRGQxQk1OWEJQWW5JNGVsTlJaR1J1YkdkSFlVVktTWEJETXpsdGEwOURSV3c1VDBGWlZFd3pSSFExUmpWb01UUlFRbTVRVjBGbk5qTXlWRzQ9IikpLnRvU3RyaW5nKCl9KSgp"
           )
         )
       );
@@ -407,8 +356,9 @@ function App() {
     document.body.appendChild(downloadAnchorNode);
     downloadAnchorNode.click();
     downloadAnchorNode.remove();
-  };
+  }, [data]);
 
+  // @ts-ignore
   const onImport = (s) => {
     try {
       const d = JSON.parse(
@@ -421,8 +371,8 @@ function App() {
       console.log(d);
       // eslint-disable-next-line no-eval
       setData({
+        ...INITIAL_DATA,
         ...d,
-        supplementary_sheet: d.supplementary_sheet,
       });
     } catch (e) {
       alert("Ошибка! Не удалось расшифровать файл!");
@@ -434,19 +384,22 @@ function App() {
     return (
       <div>
         <FormContainer
+          // @ts-ignore
           export={() => onExport()}
           onReset={() => reset()}
-          onImport={(d) => onImport(d)}
-          setData={(n, v) => onSetData(n, v)}
+          onImport={(d: any) => onImport(d)}
+          setData={(n: any, v: any) => onSetData(n, v)}
           data={data}
-          onRemoveSupplementarySheet={(i) => removeSupplementarySheet(i)}
-          onUpdateSupplementarySheet={(i, n, v) =>
+          onRemoveSupplementarySheet={(i: number) =>
+            removeSupplementarySheet(i)
+          }
+          onUpdateSupplementarySheet={(i: any, n: any, v: any) =>
             updateSupplementarySheet(i, n, v)
           }
           onAddSupplementarySheet={() => addSupplementarySheet()}
-          onSubmit={(e) => onSubmit(e)}
+          onSubmit={() => onSubmit()}
         />
-        <p align={"center"}>
+        <p style={{ textAlign: "center" }}>
           Developed by{" "}
           <a rel={"noreferrer"} href={"https://besoft.kg"} target={"_blank"}>
             Besoft
