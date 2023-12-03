@@ -33,6 +33,7 @@ function ResultContainer({ data: props, goBack }) {
         <div
           className="table_"
           style={{
+            transform: "rotate(0.4deg)",
             fontFamily: "Times New Roman",
             border: "none",
           }}
@@ -42,7 +43,8 @@ function ResultContainer({ data: props, goBack }) {
               fontSize: 25,
               display: "block",
               fontWeight: 900,
-              padding: "100px 150px 50px",
+              padding: "90px 70px 50px",
+              lineHeight: "1.1",
             }}
           >
             URUMQI KAILINGDA INTERNATIONAL
@@ -54,7 +56,8 @@ function ResultContainer({ data: props, goBack }) {
               fontSize: 25,
               display: "block",
               fontWeight: 900,
-              padding: "50px 150px 100px",
+              padding: "46px 78px 65px",
+              lineHeight: "1.1",
             }}
           >
             LLC FE TASHKENT TRADE CENTER
@@ -66,17 +69,17 @@ function ResultContainer({ data: props, goBack }) {
               fontSize: 25,
               display: "block",
               fontWeight: 900,
-              padding: "50px 150px 80px 220px",
+              padding: "29px 105px 43px 139px",
             }}
           >
             УЗБЕКИСТАН
           </div>
           <div
             style={{
-              fontSize: 22,
+              fontSize: 25,
               display: "block",
               fontWeight: 900,
-              padding: "30px 150px 100px 290px",
+              padding: "19px 150px 51px 188px",
             }}
           >
             г. Ош Кыргызстан
@@ -86,7 +89,7 @@ function ResultContainer({ data: props, goBack }) {
               fontSize: 20,
               display: "block",
               fontWeight: 900,
-              padding: "0px 150px 100px",
+              padding: "13px 93px 83px",
             }}
           >
             ИНВОЙС {(props.dop44 || "").split("\n")[1].split(" ")[1]} ОТ{" "}
@@ -97,11 +100,11 @@ function ResultContainer({ data: props, goBack }) {
               fontSize: 25,
               display: "block",
               fontWeight: 900,
-              padding: "0px 150px 200px 250px",
+              padding: "7px 108px 195px 195px",
             }}
           >
-            {props.mst6} СОГЛАНО ПО ИНВОЙСУ
-            <div style={{ display: "inline-block", paddingLeft: 220 }}>
+            {props.mst6} СОГЛАСНО ПО ИНВОЙСУ
+            <div style={{ display: "inline-block", paddingLeft: 264 }}>
               {weight}кг
             </div>
           </div>
@@ -110,11 +113,11 @@ function ResultContainer({ data: props, goBack }) {
               fontSize: 25,
               display: "block",
               fontWeight: 900,
-              padding: "150px 150px 0px 320px",
+              padding: "160px 131px 0px 177px",
             }}
           >
             <div style={{ display: "inline-block" }}>г. Ош</div>
-            <div style={{ display: "inline-block", paddingLeft: 200 }}>
+            <div style={{ display: "inline-block", paddingLeft: 171 }}>
               {(props.data || "").split(" ")[0]}
             </div>
           </div>
@@ -123,7 +126,7 @@ function ResultContainer({ data: props, goBack }) {
               fontSize: 22,
               display: "block",
               fontWeight: 900,
-              padding: "150px 150px 0px",
+              padding: "220px 57px 0px",
             }}
           >
             {(props.iden18 || "").split(": ")[1]}
