@@ -43,7 +43,7 @@
   .header {
     top: 0;
     left: 0;
-    width: 793px;
+    width: 783px;
     height: 60px;
     border-bottom: none;
     border-top: none;
@@ -55,7 +55,7 @@
     border: none;
     right: -10px;
     display: inline-block;
-    width: 366px;
+    width: 384px;
     height: 180px;
   }
   
@@ -76,7 +76,7 @@
   }
   
   .declaration {
-    width: 192px;
+    width: 182px;
     height: 90px;
     left: 600px;
     top: 45px;
@@ -115,7 +115,7 @@
   
   .otpr {
     border-left: none;
-    width: 90px;
+    width: 80px;
     height: 45px;
     left: 703px;
     top: 136px;
