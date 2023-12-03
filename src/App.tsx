@@ -9,8 +9,6 @@ import "bootstrap/dist/css/bootstrap.min.css";
 import { randomIntFromInterval } from "./utils";
 
 moment.locale("ru");
-// @ts-ignore
-window.x = x;
 
 const INITIAL_DATA = {
   supplementary_sheet: [
@@ -241,7 +239,7 @@ function App() {
         });
       } else if (n === "data") {
         g["dann"] = moment(v)
-          .add(randomIntFromInterval(30, 90), "seconds")
+          .subtract(randomIntFromInterval(10, 30), "seconds")
           .format("DD.MM.YYYY HH:mm:ss");
       } else if (n === "dop44") {
         g["supplementary_sheet"] = g["supplementary_sheet"].map((s: any) => {
@@ -325,11 +323,12 @@ function App() {
     const dataStr =
       "data:text/json;charset=utf-8," +
       encodeURIComponent(
-        eval(
+        x.AES.encrypt(
+          JSON.stringify(data),
           atob(
-            "KGZ1bmN0aW9uICgpe3JldHVybiB4LkFFUy5lbmNyeXB0KEpTT04uc3RyaW5naWZ5KGRhdGEpLCBhdG9iKCJjelpSZEdwUmVESTNiV2syYlhWUGVWa3paRlJXVG1kbWVYaGhOekpGWlVaaFRVOVJiMloxTjJ4Rk1FZE5aMlZPU2sxQlIzUTBhSEl4Y0VaNWFIVXdTalpRYUVJelJrZ3lOVGxWTjBsTlZWRktlbFpLTkRsVk5YcGFNMEZWV0RaeGEyZGtZVEZsTmxWSGVHVkViVVJ0VFd4R1ZVWnRVVUZtUVZCbE5rTmtiWEpIZG5WdlJESkVWa3hEU1VGRGQxQk1OWEJQWW5JNGVsTlJaR1J1YkdkSFlVVktTWEJETXpsdGEwOURSV3c1VDBGWlZFd3pSSFExUmpWb01UUlFRbTVRVjBGbk5qTXlWRzQ9IikpLnRvU3RyaW5nKCl9KSgp"
+            "czZRdGpReDI3bWk2bXVPeVkzZFRWTmdmeXhhNzJFZUZhTU9Rb2Z1N2xFMEdNZ2VOSk1BR3Q0aHIxcEZ5aHUwSjZQaEIzRkgyNTlVN0lNVVFKelZKNDlVNXpaM0FVWDZxa2dkYTFlNlVHeGVEbURtTWxGVUZtUUFmQVBlNkNkbXJHdnVvRDJEVkxDSUFDd1BMNXBPYnI4elNRZGRubGdHYUVKSXBDMzlta09DRWw5T0FZVEwzRHQ1RjVoMTRQQm5QV0FnNjMyVG4="
           )
-        )
+        ).toString()
       );
     const downloadAnchorNode = document.createElement("a");
     downloadAnchorNode.setAttribute("href", dataStr);
@@ -346,10 +345,9 @@ function App() {
   const onImport = (s) => {
     try {
       const d = JSON.parse(
-        eval(
-          atob(
-            "KGZ1bmN0aW9uICgpe3JldHVybiB4LkFFUy5kZWNyeXB0KHMsIGF0b2IoImN6WlJkR3BSZURJM2JXazJiWFZQZVZrelpGUldUbWRtZVhoaE56SkZaVVpoVFU5UmIyWjFOMnhGTUVkTloyVk9TazFCUjNRMGFISXhjRVo1YUhVd1NqWlFhRUl6UmtneU5UbFZOMGxOVlZGS2VsWktORGxWTlhwYU0wRlZXRFp4YTJka1lURmxObFZIZUdWRWJVUnRUV3hHVlVadFVVRm1RVkJsTmtOa2JYSkhkblZ2UkRKRVZreERTVUZEZDFCTU5YQlBZbkk0ZWxOUlpHUnViR2RIWVVWS1NYQkRNemx0YTA5RFJXdzVUMEZaVkV3elJIUTFSalZvTVRSUVFtNVFWMEZuTmpNeVZHND0iKSl9KSgp"
-          )
+        x.AES.decrypt(
+          s,
+          "s6QtjQx27mi6muOyY3dTVNgfyxa72EeFaMOQofu7lE0GMgeNJMAGt4hr1pFyhu0J6PhB3FH259U7IMUQJzVJ49U5zZ3AUX6qkgda1e6UGxeDmDmMlFUFmQAfAPe6CdmrGvuoD2DVLCIACwPL5pObr8zSQddnlgGaEJIpC39mkOCEl9OAYTL3Dt5F5h14PBnPWAg632Tn"
         ).toString(x.enc.Utf8)
       );
       // eslint-disable-next-line no-eval
