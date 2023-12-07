@@ -238,7 +238,7 @@ function App() {
           return s;
         });
       } else if (n === "data") {
-        g["dann"] = moment(v)
+        g["dann"] = moment(v, "DD.MM.YYYY HH:mm:ss")
           .subtract(randomIntFromInterval(10, 30), "seconds")
           .format("DD.MM.YYYY HH:mm:ss");
       } else if (n === "dop44") {

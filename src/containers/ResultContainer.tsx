@@ -1,5 +1,6 @@
 import { Button } from "react-bootstrap";
 import qr_code from "../assets/QR.jpg";
+import moment from "moment";
 
 // @ts-ignore
 function ResultContainer({ data: props, goBack }) {
@@ -131,6 +132,97 @@ function ResultContainer({ data: props, goBack }) {
           >
             {(props.iden18 || "").split(": ")[1]}
           </strong>
+        </div>
+        <div
+          className="table_"
+          style={{
+            fontFamily: "Times New Roman",
+            border: "none",
+            fontSize: 27,
+            paddingTop: 45,
+            padding: 100,
+            paddingBottom: 0,
+            width: 1160 - 200,
+            // height: 1685,
+          }}
+        >
+          <strong
+            style={{
+              display: "block",
+              textAlign: "center",
+            }}
+          >
+            АКТ
+            <br />
+            перегрузки товара
+          </strong>
+          <div
+            style={{
+              marginTop: 54,
+              display: "flex",
+              justifyContent: "space-between",
+              marginBottom: 54,
+            }}
+          >
+            от {moment().format("«__DD__»___MM______ YYYY")}г.
+            <div>ПТЗК «АВТОЭКСПРЕСС ИНВЕСТ»</div>
+          </div>
+          <div style={{ wordWrap: "break-word", lineHeight: 1.7 }}>
+            Мы, нижеподписавшиеся, инспектор ЦТП «ОШ» ЮЗТ
+            <br />
+            <u>_АКБАРОВ А____________________________________________</u>
+            <br />
+            представитель фирмы:<u>____СУЛАЙМАНОВ К.______________</u>
+            <br />
+            составили настоящий акт о производстве перегруза с авто машин:______{" "}
+            {props.iden21.split(" ")[1]}
+            <u>
+              __________________________________________________________________________________________________________________________________________________
+            </u>
+            <br />
+            на
+            <br />
+            автомашины_<u>__{props.iden18.split(" ")[1]}______</u>
+            ________________________________________________________________________________________
+            <br />
+            отправитель: _<u>КНР</u>
+            _________________________________________________________________
+            <br />
+            получатель:
+            <u>LLC FE TASHKENT TRADE CENTER,УЗБЕКИСТАН______________</u>
+            <br />
+            количество перегруженного груза составило:_СОГЛАСНО ИНВОЙСУ
+            <u>__________</u>
+            <br />_
+            <u>
+              ___№{(props.dop44 || "").split("\n")[1].split(" ")[1]} от{" "}
+              {(props.dop44 || "").split("\n")[1].split(" ")[2]}
+              _________________________________________________
+            </u>
+            <br />
+            груз опломбирован ГТИ КР{" "}
+            <u>____{props.plomb.match(/\d{3}/g).join(",")}__________</u>
+            <br />
+            _______________________________________________________________________
+            <br />
+            <br />
+            <div style={{ lineHeight: 1.5 }}>
+              <span style={{ fontSize: "inherit", marginRight: 30 }}>
+                Инспектор{" "}
+              </span>
+              _______________________{" "}
+              <u style={{ marginLeft: 100, fontSize: "inherit" }}>
+                __АКБАРОВ А.
+              </u>
+              <br />
+              (Ф.И.О)
+            </div>
+            <br />
+            Представитель ______________________{" "}
+            <u style={{ marginLeft: 50, fontSize: "inherit" }}>
+              СУЛАЙМАНОВ К._
+            </u>
+          </div>
         </div>
         <div className={"table_"}>
           <div className={"header div"}>
@@ -944,7 +1036,7 @@ function ResultContainer({ data: props, goBack }) {
                         fontSize: 14,
                       }}
                     >
-                      {(i + 2).toString()}
+                      {((i + 1) * 3 - 3 + 2).toString()}
                     </span>
                     <span className="number-tov">№</span>
                   </span>
@@ -1128,7 +1220,7 @@ function ResultContainer({ data: props, goBack }) {
                         fontSize: 14,
                       }}
                     >
-                      {(i + 3).toString()}
+                      {((i + 1) * 3 - 3 + 3).toString()}
                     </span>
                     <span className="title_span number-tov">№</span>
                   </span>
@@ -1314,7 +1406,7 @@ function ResultContainer({ data: props, goBack }) {
                         fontSize: 14,
                       }}
                     >
-                      {(i + 4).toString()}
+                      {((i + 1) * 3 - 3 + 4).toString()}
                     </span>
                     <span className="number-tov">№</span>
                   </span>

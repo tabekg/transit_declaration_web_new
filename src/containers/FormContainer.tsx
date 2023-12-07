@@ -14,6 +14,7 @@ import {
   Modal,
 } from "react-bootstrap";
 import SupplementarySheetComponent from "../components/SupplementarySheetComponent";
+import { strToInt } from "../config";
 
 function FormContainer(props: any) {
   const fileInput = useRef();
@@ -159,21 +160,15 @@ function FormContainer(props: any) {
           col_otlichitel_1: g[0][4],
           col_otlichitel_2: g[1][4],
           col_otlichitel_3: g[2][4],
-          ves_2_1: (+g[0][7].replaceAll(" ", "").replaceAll(",", ""))
-            .toFixed(3)
-            .toString(),
-          ves_2_2: (+g[1][7].replaceAll(" ", "").replaceAll(",", ""))
-            .toFixed(3)
-            .toString(),
-          ves_2_3: (+g[2][7].replaceAll(" ", "").replaceAll(",", ""))
-            .toFixed(3)
-            .toString(),
+          ves_2_1: strToInt(g[0][7]).toFixed(3).toString(),
+          ves_2_2: strToInt(g[1][7]).toFixed(3).toString(),
+          ves_2_3: strToInt(g[2][7]).toFixed(3).toString(),
           usd_2_1: g[0][5],
           usd_2_2: g[1][5],
           usd_2_3: g[2][5],
-          valut_st_summ_1: g[0][9].replaceAll(" ", "").replaceAll(",", ""),
-          valut_st_summ_2: g[1][9].replaceAll(" ", "").replaceAll(",", ""),
-          valut_st_summ_3: g[2][9].replaceAll(" ", "").replaceAll(",", ""),
+          valut_st_summ_1: strToInt(g[0][9]).toFixed(2).toString(),
+          valut_st_summ_2: strToInt(g[1][9]).toFixed(2).toString(),
+          valut_st_summ_3: strToInt(g[2][9]).toFixed(2).toString(),
 
           cod_di_3: "",
           cod_di_2: "",
@@ -689,7 +684,14 @@ function FormContainer(props: any) {
                       Вес(кг)
                     </Form.Label>
                     <Form.Control
-                      onChange={(e) => setData("ves35", e.target.value)}
+                      onChange={(e) =>
+                        setData(
+                          "ves35",
+                          e.target.value
+                            .replaceAll(",", ".")
+                            .replaceAll(" ", "")
+                        )
+                      }
                       type="text"
                       placeholder="кг"
                       value={data.ves35}
@@ -752,7 +754,14 @@ function FormContainer(props: any) {
                         value={data.perv42}
                       />
                       <Form.Control
-                        onChange={(e) => setData("vtr42", e.target.value)}
+                        onChange={(e) =>
+                          setData(
+                            "vtr42",
+                            e.target.value
+                              .replaceAll(",", ".")
+                              .replaceAll(" ", "")
+                          )
+                        }
                         type="number"
                         value={data.vtr42}
                         placeholder="Сумма"
