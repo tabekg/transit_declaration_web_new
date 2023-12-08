@@ -30,20 +30,17 @@ const INITIAL_DATA = {
       col_otlichitel_1: "NA-2",
       cod_tovar_2_1: "620374350",
       ves_2_1: "112.400",
-      dop_info_2_1: "02041 0124234 07.09.2021\n04021 3663 30.08.2021",
       usd_2_1: "280    796",
       valut_st_summ_1: "560.00",
       cod_di_1: "796",
       col_otlichitel_2: "NA-5",
       cod_tovar_2_2: "2395125000",
       ves_2_2: "4021.45",
-      dop_info_2_2: "02041 0124234 07.09.2021\n04021 3663 30.08.2021",
       usd_2_2: "280    796",
       valut_st_summ_2: "560.00",
       col_otlichitel_3: "NA-5",
       cod_tovar_2_3: "2395125000",
       ves_2_3: "4021.45",
-      dop_info_2_3: "02041 0124234 07.09.2021\n04021 3663 30.08.2021",
       usd_2_3: "280    706",
       valut_st_summ_3: "560.00",
       cod_di_3: "124",
@@ -65,20 +62,17 @@ const INITIAL_DATA = {
       col_otlichitel_1: "NA-3",
       cod_tovar_2_1: "23632",
       ves_2_1: "4021.45",
-      dop_info_2_1: "02041 0124234 07.09.2021\n04021 3663 30.08.2021",
       usd_2_1: "280    706",
       valut_st_summ_1: "560.00",
       cod_di_1: "235",
       col_otlichitel_2: "NA-3",
       cod_tovar_2_2: "2395125000",
       ves_2_2: "4021.45",
-      dop_info_2_2: "02041 0124234 07.09.2021\n04021 3663 30.08.2021",
       usd_2_2: "280    706",
       valut_st_summ_2: "324532",
       col_otlichitel_3: "NA-3",
       cod_tovar_2_3: "4366346",
       ves_2_3: "4021.45",
-      dop_info_2_3: "02041 0124234 07.09.2021\n04021 3663 30.08.2021",
       usd_2_3: "123    124",
       valut_st_summ_3: "214.124",
       cod_di_3: "214",
@@ -144,9 +138,6 @@ const getSupplementarySheetInitData = (data: any) => {
     valut_st_usd_1: "USD",
 
     otpr_2: data.organ,
-    dop_info_2_1: data.dop44,
-    dop_info_2_2: data.dop44,
-    dop_info_2_3: data.dop44,
 
     mark_kol_1: "1 ",
     mark_kol_2: "1 ",
@@ -232,6 +223,8 @@ function App() {
     setData((p) => {
       const g = { ...p };
 
+      v = typeof v === "function" ? v(g[n]) : v;
+
       if (n === "organ") {
         g["supplementary_sheet"] = g["supplementary_sheet"].map((s: any) => {
           s["otpr_2"] = v;
@@ -241,13 +234,6 @@ function App() {
         g["dann"] = moment(v, "DD.MM.YYYY HH:mm:ss")
           .subtract(randomIntFromInterval(10, 30), "seconds")
           .format("DD.MM.YYYY HH:mm:ss");
-      } else if (n === "dop44") {
-        g["supplementary_sheet"] = g["supplementary_sheet"].map((s: any) => {
-          s["dop_info_2_1"] = v;
-          s["dop_info_2_2"] = v;
-          s["dop_info_2_3"] = v;
-          return s;
-        });
       }
 
       g[n] = v;

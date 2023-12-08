@@ -15,6 +15,7 @@ import {
 } from "react-bootstrap";
 import SupplementarySheetComponent from "../components/SupplementarySheetComponent";
 import { strToInt } from "../config";
+import moment from "moment";
 
 function FormContainer(props: any) {
   const fileInput = useRef();
@@ -172,9 +173,6 @@ function FormContainer(props: any) {
 
           cod_di_3: "",
           cod_di_2: "",
-          dop_info_2_1: "02041 0124234 07.09.2021\n04021 3663 30.08.2021",
-          dop_info_2_3: "02041 0124234 07.09.2021\n04021 3663 30.08.2021",
-          dop_info_2_2: "02041 0124234 07.09.2021\n04021 3663 30.08.2021",
           number_containers_1: "2",
           number_containers_2: "2",
           number_containers_3: "2",
@@ -436,7 +434,21 @@ function FormContainer(props: any) {
                 </Col>
               </Row>
               <Row className="mt-4">
-                <Col md={7}></Col>
+                <Col md={7}>
+                  <Button
+                    onClick={() => {
+                      setData("organ", (l: string) => {
+                        const b = l.split("/");
+                        return [b[0], moment().format("DDMMYY"), b[2]].join(
+                          "/"
+                        );
+                      });
+                      setData("data", moment().format("DD.MM.YYYY HH:mm:ss"));
+                    }}
+                  >
+                    Сегодня {moment().format("DD.MM.YYYY")}
+                  </Button>
+                </Col>
                 <Col sm={2}>
                   <Form.Group className="mb-3 mx-3" controlId="formBasicEmail">
                     <Form.Label className="d-flex justify-content-center">
@@ -494,6 +506,7 @@ function FormContainer(props: any) {
               </Row>
             </Card.Body>
           </Card>
+
           <Card style={{ width: "100%", marginTop: 20 }}>
             <Card.Body>
               <Row>
@@ -919,6 +932,29 @@ function FormContainer(props: any) {
                       placeholder=""
                     />
                   </Form.Group>
+                </Col>
+                <Col>
+                  <Button
+                    onClick={() => {
+                      setData("mest", (l: string) => {
+                        const b = l.split(", ");
+                        return b[0] + ", " + moment().format("DD.MM.YYYY");
+                      });
+                      setData("organC", (l: string) => {
+                        const b = l.split("РАЗРЕШЕН\n ");
+                        const c = b[1].split("\n ");
+                        return (
+                          b[0] +
+                          "РАЗРЕШЕН\n " +
+                          moment().format("DD.MM.YYYY") +
+                          "\n " +
+                          c[1]
+                        );
+                      });
+                    }}
+                  >
+                    Сегодня {moment().format("DD.MM.YYYY")}
+                  </Button>
                 </Col>
               </Row>
             </Card.Body>

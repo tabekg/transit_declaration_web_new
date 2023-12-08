@@ -143,7 +143,7 @@ function ResultContainer({ data: props, goBack }) {
             padding: 100,
             paddingBottom: 0,
             width: 1160 - 200,
-            // height: 1685,
+            height: 1685 - 55,
           }}
         >
           <strong
@@ -231,7 +231,6 @@ function ResultContainer({ data: props, goBack }) {
                 marginLeft: 90,
                 fontSize: 25,
                 fontWeight: "bold",
-                marginTop: 20,
               }}
             >
               {" "}
@@ -1178,7 +1177,7 @@ function ResultContainer({ data: props, goBack }) {
                     }}
                     className="content_span"
                   >
-                    {v.dop_info_2_1}
+                    {props.dop44}
                   </span>
                 </div>
               </div>
@@ -1364,7 +1363,7 @@ function ResultContainer({ data: props, goBack }) {
                     }}
                     className="content_span"
                   >
-                    {v.dop_info_2_2}
+                    {props.dop44}
                   </span>
                 </div>
               </div>
@@ -1406,7 +1405,7 @@ function ResultContainer({ data: props, goBack }) {
                         fontSize: 14,
                       }}
                     >
-                      {((i + 1) * 3 - 3 + 4).toString()}
+                      {v.mark_kol_3 ? ((i + 1) * 3 - 3 + 4).toString() : ""}
                     </span>
                     <span className="number-tov">№</span>
                   </span>
@@ -1447,7 +1446,9 @@ function ResultContainer({ data: props, goBack }) {
                         style={{ marginTop: -15, fontSize: 13 }}
                         className=" content_span_2"
                       >
-                        {(+v.ves_2_3.replaceAll(",", ".")).toFixed(3)}
+                        {v.mark_kol_3
+                          ? (+v.ves_2_3.replaceAll(",", ".")).toFixed(3)
+                          : ""}
                       </span>
                     </span>
                     <span className={"cod_1_span_32"}> </span>
@@ -1463,9 +1464,11 @@ function ResultContainer({ data: props, goBack }) {
                       40 Общая декларация/Предшествующий документ
                     </span>
                     <span style={{ marginTop: 4 }} className=" content_span_2">
-                      {(props.decl40.split("/")[0] || "") +
-                        "/" +
-                        ((i + 1) * 3 - 3 + 4)}
+                      {v.mark_kol_3
+                        ? (props.decl40.split("/")[0] || "") +
+                          "/" +
+                          ((i + 1) * 3 - 3 + 4)
+                        : ""}
                     </span>
                   </div>
                   <div className="col_52 div">
@@ -1490,7 +1493,7 @@ function ResultContainer({ data: props, goBack }) {
                         }}
                         className={"content_span"}
                       >
-                        {v.valut_st_usd_3}
+                        {v.mark_kol_3 ? v.valut_st_usd_3 : ""}
                       </span>
                       <span
                         style={{
@@ -1500,7 +1503,9 @@ function ResultContainer({ data: props, goBack }) {
                         }}
                         className={"content_span"}
                       >
-                        {(+v.valut_st_summ_3.replaceAll(",", ".")).toFixed(2)}
+                        {v.mark_kol_3
+                          ? (+v.valut_st_summ_3.replaceAll(",", ".")).toFixed(2)
+                          : ""}
                       </span>
                     </div>
                     <div
@@ -1554,7 +1559,7 @@ function ResultContainer({ data: props, goBack }) {
                     }}
                     className="content_span"
                   >
-                    {v.dop_info_2_3}
+                    {v.mark_kol_3 ? props.dop44 : ""}
                   </span>
                 </div>
               </div>

@@ -214,40 +214,8 @@ class SupplementarySheetComponent extends Component {
                 />
               </Form.Group>
             </Col>
-            <Col sm={3}>
-              <Form.Group className="mb-3 mx-3" controlId="formBasicEmail">
-                <Form.Label className="d-flex justify-content-center">
-                  40 Общая декларация
-                </Form.Label>
-                <Form.Control
-                  disabled={true}
-                  type="text"
-                  value={
-                    (globalData.decl40.split("/")[0] || "") +
-                    "/" +
-                    (id * 3 - 3 + 2)
-                  }
-                  placeholder=""
-                />
-              </Form.Group>
-            </Col>
           </Row>
           <Row className={"mt-4"}>
-            <Col md={5}>
-              <Form.Group className="mb-3 mx-3" controlId="formBasicEmail">
-                <Form.Label className="d-flex justify-content-center">
-                  44 Доп. информация
-                </Form.Label>
-                <Form.Control
-                  onChange={(e) => onUpdate("dop_info_2_1", e.target.value)}
-                  rows={2}
-                  as="textarea"
-                  value={data.dop_info_2_1}
-                  type="text"
-                  placeholder="Доп. информация"
-                />
-              </Form.Group>
-            </Col>
             <Col sm={3}>
               <Form.Group className="mb-3 mx-3" controlId="formBasicEmail">
                 <Form.Label className="d-flex justify-content-center">
@@ -389,40 +357,8 @@ class SupplementarySheetComponent extends Component {
                 />
               </Form.Group>
             </Col>
-            <Col sm={3}>
-              <Form.Group className="mb-3 mx-3" controlId="formBasicEmail">
-                <Form.Label className="d-flex justify-content-center">
-                  40 Общая декларация
-                </Form.Label>
-                <Form.Control
-                  disabled={true}
-                  type="text"
-                  value={
-                    (globalData.decl40.split("/")[0] || "") +
-                    "/" +
-                    (id * 3 - 3 + 3)
-                  }
-                  placeholder=""
-                />
-              </Form.Group>
-            </Col>
           </Row>
           <Row className={"mt-4"}>
-            <Col md={5}>
-              <Form.Group className="mb-3 mx-3" controlId="formBasicEmail">
-                <Form.Label className="d-flex justify-content-center">
-                  44 Доп. информация
-                </Form.Label>
-                <Form.Control
-                  onChange={(e) => onUpdate("dop_info_2_2", e.target.value)}
-                  rows={2}
-                  as="textarea"
-                  value={data.dop_info_2_2}
-                  type="text"
-                  placeholder="Доп. информация"
-                />
-              </Form.Group>
-            </Col>
             <Col sm={3}>
               <Form.Group className="mb-3 mx-3" controlId="formBasicEmail">
                 <Form.Label className="d-flex justify-content-center">
@@ -564,40 +500,8 @@ class SupplementarySheetComponent extends Component {
                 />
               </Form.Group>
             </Col>
-            <Col sm={3}>
-              <Form.Group className="mb-3 mx-3" controlId="formBasicEmail">
-                <Form.Label className="d-flex justify-content-center">
-                  40 Общая декларация
-                </Form.Label>
-                <Form.Control
-                  disabled={true}
-                  type="text"
-                  value={
-                    (globalData.decl40.split("/")[0] || "") +
-                    "/" +
-                    (id * 3 - 3 + 4)
-                  }
-                  placeholder=""
-                />
-              </Form.Group>
-            </Col>
           </Row>
           <Row className={"mt-4"}>
-            <Col md={5}>
-              <Form.Group className="mb-3 mx-3" controlId="formBasicEmail">
-                <Form.Label className="d-flex justify-content-center">
-                  44 Доп. информация
-                </Form.Label>
-                <Form.Control
-                  onChange={(e) => onUpdate("dop_info_2_3", e.target.value)}
-                  rows={2}
-                  as="textarea"
-                  value={data.dop_info_2_3}
-                  type="text"
-                  placeholder="Доп. информация"
-                />
-              </Form.Group>
-            </Col>
             <Col sm={3}>
               <Form.Group className="mb-3 mx-3" controlId="formBasicEmail">
                 <Form.Label className="d-flex justify-content-center">
